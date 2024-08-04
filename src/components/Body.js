@@ -7,6 +7,7 @@ const Body = () => {
   const [filteredList, setFilteredList] = useState([]);
   const [count, setCount] = useState(0);
   const [searchText, setSearchText] = useState("");
+  const [loading, setLoading] = useState(true); // Add a loading state
 
   const RestaurantCardPromoted = withPromotedLabel(RestaurantCard);
 
@@ -25,6 +26,7 @@ const Body = () => {
         ?.restaurants || [];
     setOriginalList(restaurants);
     setFilteredList(restaurants);
+    setLoading(false); // Set loading to false after data is fetched
   };
 
   const filterList = () => {
@@ -55,8 +57,23 @@ const Body = () => {
     }
   }, [filteredList, originalList]);
 
-  return filteredList ? (
-    <div className="body flex flex-col items-center p-4">
+  const ShimmerCard = () => {
+    return (
+      <div
+        className="bg-gray-100 animate-pulse rounded-lg shadow-md p-4 m-2"
+        style={{ minWidth: "250px", maxWidth: "250px", height: "350px" }}
+      >
+        <div className="bg-gray-200 h-32 rounded-md mb-4"></div>
+        <div className="bg-gray-200 h-6 w-3/4 rounded mb-2"></div>
+        <div className="bg-gray-200 h-4 w-1/2 rounded mb-2"></div>
+        <div className="bg-gray-200 h-4 w-1/4 rounded mb-2"></div>
+        <div className="bg-gray-200 h-4 w-1/2 rounded mb-2"></div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="body flex flex-col items-center mx-40 p-4">
       <div className="filter flex items-center space-x-4 mb-4">
         <div className="search flex items-center space-x-2">
           <input
@@ -81,23 +98,30 @@ const Body = () => {
           {count === 0 ? "Top Rated Restaurant" : "Reset Filter"}
         </button>
       </div>
-      <div className="flex flex-wrap justify-center gap-4">
-        {filteredList.map((restaurant) => (
-          <Link
-            to={"/restaurants/" + restaurant.info.id}
-            key={restaurant.info.id}
-          >
-            {restaurant?.info?.avgRating > 4.4 ? (
-              <RestaurantCardPromoted resData={restaurant} />
-            ) : (
-              <RestaurantCard resData={restaurant} />
-            )}
-          </Link>
-        ))}
-      </div>
+      {loading ? (
+        <div className="flex flex-wrap justify-center gap-4 mt-4">
+          <ShimmerCard />
+          <ShimmerCard />
+          <ShimmerCard />
+          <ShimmerCard />
+        </div>
+      ) : (
+        <div className="flex flex-wrap justify-center gap-4">
+          {filteredList.map((restaurant) => (
+            <Link
+              to={"/restaurants/" + restaurant.info.id}
+              key={restaurant.info.id}
+            >
+              {restaurant?.info?.avgRating > 4.4 ? (
+                <RestaurantCardPromoted resData={restaurant} />
+              ) : (
+                <RestaurantCard resData={restaurant} />
+              )}
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
-  ) : (
-    <h1>Loading...........</h1>
   );
 };
 

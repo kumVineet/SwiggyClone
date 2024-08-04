@@ -12,11 +12,11 @@ const RestaurantCard = (props) => {
   const truncatedCuisines = truncateText(cuisines.join(", "), 50);
   return (
     <div
-      className="bg-white border rounded-lg shadow-md overflow-hidden flex flex-col p-4 m-2"
+      className="bg-white border rounded-lg shadow-md overflow-hidden flex flex-col p-4 m-2 transition-transform transform hover:scale-110 hover:shadow-xl"
       style={{ minWidth: "250px", maxWidth: "250px", height: "350px" }}
     >
       <img
-        className="w-full h-32 object-cover rounded-md"
+        className="w-full h-36 object-cover rounded-md"
         src={CDN_URL + cloudinaryImageId}
       />
       <h3 className="text-lg font-semibold text-gray-800 mt-4 mb-2 text-left">
@@ -26,19 +26,11 @@ const RestaurantCard = (props) => {
         <h4 className="text-sm font-medium text-gray-600 text-left">
           {avgRating}
         </h4>
-
         <h4 className="text-sm font-medium text-gray-600 text-left">
           {sla.slaString}
         </h4>
       </div>
-      <h4
-        className="text-sm font-medium text-gray-600 text-left break-words overflow-hidden"
-        style={{
-          display: "-webkit-box",
-          WebkitLineClamp: 3,
-          WebkitBoxOrient: "vertical",
-        }}
-      >
+      <h4 className="text-sm font-medium text-gray-600 text-left break-words overflow-hidden">
         {truncatedCuisines}
       </h4>
       <h4 className="text-sm font-medium text-gray-600 text-left">
@@ -54,8 +46,8 @@ const RestaurantCard = (props) => {
 export const withPromotedLabel = (RestaurantCard) => {
   return (props) => {
     return (
-      <div>
-        <label className="absolute m-2 bg-black text-cyan-300 text-sm font-mono rounded-tr-md rounded-br-md px-1">
+      <div className="relative">
+        <label className="absolute top-2 left-2 bg-black text-white text-sm font-mono rounded-tr-md rounded-br-md px-2 py-1 z-10">
           Good Food
         </label>
         <RestaurantCard {...props} />
