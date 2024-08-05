@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 const Body = () => {
   const [originalList, setOriginalList] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
+  const [location, setLocation] = useState({ lat: null, lng: null });
   const [count, setCount] = useState(0);
   const [searchText, setSearchText] = useState("");
   const [loading, setLoading] = useState(true); // Add a loading state
@@ -12,12 +13,27 @@ const Body = () => {
   const RestaurantCardPromoted = withPromotedLabel(RestaurantCard);
 
   useEffect(() => {
-    fetchData();
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+          fetchData(position.coords.latitude, position.coords.longitude);
+        },
+        (error) => {
+          setError(error.message);
+        }
+      );
+    } else {
+      setError("Geolocation not supported");
+    }
   }, []);
 
-  const fetchData = async () => {
+  const fetchData = async (lat, long) => {
     const data = await fetch(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.65200&lng=77.16630&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+      `https://www.swiggy.com/dapi/restaurants/list/v5?lat=${lat}&lng=${long}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`
     );
     const json = await data.json();
 
