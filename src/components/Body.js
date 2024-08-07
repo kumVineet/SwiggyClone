@@ -8,11 +8,12 @@ const Body = () => {
   const [location, setLocation] = useState({ lat: null, lng: null });
   const [count, setCount] = useState(0);
   const [searchText, setSearchText] = useState("");
-  const [loading, setLoading] = useState(true); // Add a loading state
+  const [loading, setLoading] = useState(false);
 
   const RestaurantCardPromoted = withPromotedLabel(RestaurantCard);
 
   useEffect(() => {
+    setLoading(true);
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -42,7 +43,7 @@ const Body = () => {
         ?.restaurants || [];
     setOriginalList(restaurants);
     setFilteredList(restaurants);
-    setLoading(false); // Set loading to false after data is fetched
+    setLoading(false);
   };
 
   const filterList = () => {
@@ -80,10 +81,10 @@ const Body = () => {
         style={{ minWidth: "250px", maxWidth: "250px", height: "350px" }}
       >
         <div className="bg-gray-200 h-32 rounded-md mb-4"></div>
-        <div className="bg-gray-200 h-6 w-3/4 rounded mb-2"></div>
-        <div className="bg-gray-200 h-4 w-1/2 rounded mb-2"></div>
-        <div className="bg-gray-200 h-4 w-1/4 rounded mb-2"></div>
-        <div className="bg-gray-200 h-4 w-1/2 rounded mb-2"></div>
+        <div className="bg-gray-200 h-6 w-3/4 rounded mb-2 mt-2"></div>
+        <div className="bg-gray-200 h-4 w-1/2 rounded mb-2 mt-4"></div>
+        <div className="bg-gray-200 h-4 w-1/4 rounded mb-2 mt-4"></div>
+        <div className="bg-gray-200 h-4 w-1/2 rounded mb-2 mt-4"></div>
       </div>
     );
   };

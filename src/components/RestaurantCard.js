@@ -1,4 +1,5 @@
 import { CDN_URL } from "../utils/constants";
+import greenStar from "../assets/Images/greenStar.png";
 
 const truncateText = (text, maxLength) => {
   if (text.length <= maxLength) return text;
@@ -22,18 +23,20 @@ const RestaurantCard = (props) => {
       <h3 className="text-lg font-semibold text-gray-800 mt-4 mb-2 text-left">
         {name}
       </h3>
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-2">
+        <img src={greenStar} className="w-4 h-4" />
         <h4 className="text-sm font-medium text-gray-600 text-left">
           {avgRating}
         </h4>
+        <span className="h-1 w-1 bg-gray-500 rounded-full inline-block ml-2" />
         <h4 className="text-sm font-medium text-gray-600 text-left">
           {sla.slaString}
         </h4>
       </div>
-      <h4 className="text-sm font-medium text-gray-600 text-left break-words overflow-hidden">
+      <h4 className="text-sm font-medium text-gray-600 text-left break-words overflow-hidden mt-2">
         {truncatedCuisines}
       </h4>
-      <h4 className="text-sm font-medium text-gray-600 text-left">
+      <h4 className="text-sm font-medium text-gray-600 text-left mt-2">
         {costForTwo}
       </h4>
     </div>
