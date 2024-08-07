@@ -25,7 +25,7 @@ const ResMenuHeader = (props) => {
   const plainText = stripHtmlTags(feeDetails?.message);
 
   return (
-    <div className="flex flex-col md:flex-row items-center max-w-full h-auto md:h-72 rounded overflow-hidden shadow-lg p-4 justify-between">
+    <div className="flex flex-col md:flex-row items-center max-w-full h-auto md:h-60 rounded overflow-hidden shadow-lg p-4 justify-between">
       <div className="flex-1 md:mr-4">
         <div className="font-bold text-xl md:text-2xl mb-2">{name}</div>
         <div className="flex items-center mb-2 space-x-2">

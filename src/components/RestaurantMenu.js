@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { MENU_API } from "../utils/constants";
 import ResMenuHeader, { MenuHeaderSkeleton } from "./ResMenuHeader";
+import CardItem from "./CardItem";
 
 const RestaurantMenu = () => {
   const [resData, setResData] = useState(null);
@@ -76,35 +77,33 @@ const RestaurantMenu = () => {
   }
 
   const headerData = resData?.cards[2]?.card?.card?.info;
+  console.log("Processed Data ", processedData);
 
   return (
-    <div className="max-w-full mx-44 mt-4">
+    <div className="max-w-full mx-36 mt-4">
       <ResMenuHeader data={headerData} />
+      <div className="h-3 max-w-full mt-6 mb-4 bg-gray-200" />
       <div className="menu">
         {Object.keys(processedData).map((type) => (
           <div key={type}>
             {processedData[type].map((category, index) => (
-              <div key={index} className="mb-6">
-                <h2 className="text-xl font-bold mb-2">{category.title}</h2>
-                <ul className="list-disc list-inside ml-4">
+              <div key={index} className="">
+                <h2 className="text-xl font-bold m-2">{category.title}</h2>
+                <ul className=" list-inside ml-4">
                   {category.itemCards?.map((item) => (
                     <li key={item?.card?.info?.id}>
-                      {item?.card?.info?.name} --- Rs{" "}
-                      {(item?.card?.info?.defaultPrice ||
-                        item?.card?.info?.price) / 100}
+                      <CardItem data={item?.card?.info} />
                     </li>
                   ))}
                   {category.categories?.map((subCategory, subIndex) => (
                     <div key={subIndex}>
-                      <h3 className="text-lg font-semibold mt-2">
+                      <h3 className="text-xl font-semibold mt-2">
                         {subCategory.title}
                       </h3>
-                      <ul className="list-disc list-inside ml-4">
+                      <ul className=" list-inside ml-4">
                         {subCategory.itemCards?.map((item) => (
                           <li key={item?.card?.info?.id}>
-                            {item?.card?.info?.name} --- Rs{" "}
-                            {(item?.card?.info?.defaultPrice ||
-                              item?.card?.info?.price) / 100}
+                            <CardItem data={item?.card?.info} />
                           </li>
                         ))}
                       </ul>
