@@ -15,8 +15,8 @@ const CardItem = (props) => {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row max-w-full h-52 p-4 justify-between border-b border-gray-300">
-        <div className=" ">
+      <div className="flex flex-col md:flex-row max-w-full h-56 p-4 justify-between ">
+        <div className="w-2/3 h-52">
           <img
             src={isVeg ? veg : nonVeg}
             className="w-5 h-5 mb-2 md:mb-0 md:mr-2"
@@ -26,20 +26,24 @@ const CardItem = (props) => {
           <h4 className="text-lg font-medium ">
             ₹{(data.defaultPrice || data.price) / 100}
           </h4>
-          <p className="text-sm text-gray-500 mt-8">{data.description}</p>
+          <p className="text-sm  text-gray-500 mt-2 md:mt-5">
+            {data.description}
+          </p>
         </div>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col h-52  ">
           <img
-            className="w-40 h-36 object-cover rounded-md mb-2 md:mb-0"
+            className="w-40 h-40 object-fill rounded-md "
             src={ITEM_IMG + data?.imageId}
             alt={data.name}
           />
           <div className="flex flex-col relative bottom-8 items-center mt-2">
-            <button className="bg-white text-green-500 py-2 px-4 w-28 h-10 border border-gray-500 rounded-md mb-1">
+            <button className="bg-white text-green-500 font-bold py-2 px-4 w-28 h-10 border border-gray-500 rounded-md mb-1">
               ADD
             </button>
             {data.addons ? (
-              <span className="text-xs text-gray-500">Customisable</span>
+              <span className="text-xs text-gray-500 font-light">
+                Customisable
+              </span>
             ) : null}
           </div>
         </div>

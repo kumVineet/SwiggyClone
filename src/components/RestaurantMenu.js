@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { MENU_API } from "../utils/constants";
 import ResMenuHeader, { MenuHeaderSkeleton } from "./ResMenuHeader";
-import CardItem from "./CardItem";
+import AccordianBody from "./AccordianBody";
 
 const RestaurantMenu = () => {
   const [resData, setResData] = useState(null);
   const [loading, setLoading] = useState(true);
   const { resId } = useParams();
   const [processedData, setProcessedData] = useState({});
+  const [showIndex, setShowIndex] = useState(0);
 
   useEffect(() => {
     setLoading(true);
@@ -77,43 +78,70 @@ const RestaurantMenu = () => {
   }
 
   const headerData = resData?.cards[2]?.card?.card?.info;
-  console.log("Processed Data ", processedData);
+  // console.log("Processed Data ", processedData);
 
   return (
     <div className="max-w-full mx-36 mt-4">
       <ResMenuHeader data={headerData} />
-      <div className="h-3 max-w-full mt-6 mb-4 bg-gray-200" />
-      <div className="menu">
-        {Object.keys(processedData).map((type) => (
-          <div key={type}>
-            {processedData[type].map((category, index) => (
-              <div key={index} className="">
-                <h2 className="text-xl font-bold m-2">{category.title}</h2>
-                <ul className=" list-inside ml-4">
-                  {category.itemCards?.map((item) => (
-                    <li key={item?.card?.info?.id}>
-                      <CardItem data={item?.card?.info} />
-                    </li>
-                  ))}
-                  {category.categories?.map((subCategory, subIndex) => (
-                    <div key={subIndex}>
-                      <h3 className="text-xl font-semibold mt-2">
-                        {subCategory.title}
-                      </h3>
-                      <ul className=" list-inside ml-4">
-                        {subCategory.itemCards?.map((item) => (
-                          <li key={item?.card?.info?.id}>
-                            <CardItem data={item?.card?.info} />
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+      <div className="flex items-center justify-center h-full mt-4">
+        <h4>Menu</h4>
+      </div>
+      <div className="h-3 max-w-full mt-6 mb-4 bg-gray-100" />
+      <div>
+        {processedData[
+          "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"
+        ]?.map((item, index) => (
+          <React.Fragment key={item.title}>
+            <AccordianBody
+              itemData={item}
+              isNested={false}
+              isExpanded={index === showIndex ? true : false}
+              setShowIndex={() => setShowIndex(index)}
+            />
+          </React.Fragment>
         ))}
+      </div>
+      <div>
+        {processedData[
+          "type.googleapis.com/swiggy.presentation.food.v2.NestedItemCategory"
+        ] &&
+        processedData[
+          "type.googleapis.com/swiggy.presentation.food.v2.NestedItemCategory"
+        ].length > 0
+          ? processedData[
+              "type.googleapis.com/swiggy.presentation.food.v2.NestedItemCategory"
+            ].map((nestedItem) => (
+              <React.Fragment key={nestedItem.title}>
+                <div>
+                  <div className="w-full mx-auto bg-gray-50 shadow-lg p-2 mb-4 flex justify-between cursor-pointer rounded-lg">
+                    <span className="text-xl font-bold ml-5">
+                      {nestedItem.title}
+                    </span>
+                  </div>
+                  <div>
+                    {nestedItem?.categories?.map((item, index, arr) => (
+                      <div
+                        key={item.title}
+                        className={`relative mt-3 mx-4 ${
+                          index !== arr.length - 1
+                            ? "border-b border-gray-200"
+                            : ""
+                        }`}
+                      >
+                        <AccordianBody
+                          itemData={item}
+                          isNested={true}
+                          isExpanded={index === showIndex ? true : false}
+                          setShowIndex={() => setShowIndex(index)}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="h-3 max-w-full mt-6 mb-4 bg-gray-100" />
+              </React.Fragment>
+            ))
+          : null}
       </div>
     </div>
   );
