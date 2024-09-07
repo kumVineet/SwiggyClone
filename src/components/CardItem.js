@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { ITEM_IMG } from "../utils/constants";
 import nonVeg from "../assets/Images/non-veg.png";
 import veg from "../assets/Images/veg.png";
+import { useDispatch } from "react-redux";
+import { addItem } from "../utils/cartSlice";
 
 const CardItem = (props) => {
+  const dispatch = useDispatch();
   const { data } = props;
   const [isVeg, setIsVeg] = useState(true);
 
@@ -12,6 +15,10 @@ const CardItem = (props) => {
       setIsVeg(false);
     }
   }, [data]);
+
+  const handleAddItem = () => {
+    dispatch(addItem(data));
+  };
 
   return (
     <>
@@ -37,7 +44,10 @@ const CardItem = (props) => {
             alt={data.name}
           />
           <div className="flex flex-col relative bottom-8 items-center mt-2">
-            <button className="bg-white text-green-500 font-bold py-2 px-4 w-28 h-10 border border-gray-500 rounded-md mb-1">
+            <button
+              className="bg-white text-green-500 font-bold py-2 px-4 w-28 h-10 border border-gray-500 rounded-md mb-1"
+              onClick={() => handleAddItem()}
+            >
               ADD
             </button>
             {data.addons ? (

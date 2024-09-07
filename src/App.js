@@ -9,13 +9,17 @@ const Error = lazy(() => import("./components/Error"));
 const Header = lazy(() => import("./components/Header"));
 const ContactUs = lazy(() => import("./components/ContactUs"));
 const RestaurantMenu = lazy(() => import("./components/RestaurantMenu"));
+import { Provider } from "react-redux";
+import appStore from "./utils/appStore";
 
 const AppLayout = () => {
   return (
-    <div className="app">
-      <Header />
-      <Outlet />
-    </div>
+    <Provider store={appStore}>
+      <div className="app">
+        <Header />
+        <Outlet />
+      </div>
+    </Provider>
   );
 };
 

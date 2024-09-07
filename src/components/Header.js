@@ -1,7 +1,10 @@
 import { LOGO_URL } from "../utils/constants";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Header = () => {
+  const items = useSelector((store) => store.cart.items);
+
   return (
     <div className=" bg-white shadow-md p-4 ">
       <div className="flex items-center justify-between mx-32">
@@ -54,9 +57,9 @@ const Header = () => {
             <li>
               <Link
                 to={"/cart"}
-                className="text-gray-800 hover:text-orange-600 transition duration-200"
+                className="text-gray-800 hover:text-orange-600 transition duration-200 font-bold"
               >
-                Cart
+                Cart({items.length})
               </Link>
             </li>
           </ul>
